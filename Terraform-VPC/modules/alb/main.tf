@@ -48,7 +48,7 @@ resource "aws_lb_target_group" "tg" {
 
   # Checkov
   health_check {
-    path                = "../../health"  # Adjust this path as needed
+    path                = "/health"  # Adjust this path as needed
     interval            = 30
     timeout             = 5
     healthy_threshold  = 2
@@ -65,10 +65,10 @@ resource "aws_lb_target_group_attachment" "tga" {
 }
 
 
-resource "aws_wafregional_web_acl_association" "foo" {
+/* resource "aws_wafregional_web_acl_association" "foo" {
   resource_arn = aws_lb.alb.arn
   web_acl_id = aws_wafregional_web_acl.foo.id
-}
+} */
 
 # Step 1: Create the S3 Bucket
 resource "aws_s3_bucket" "lb_logs" {

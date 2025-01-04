@@ -51,9 +51,14 @@ resource "aws_route_table_association" "rta" {
   route_table_id = aws_route_table.rt.id
 }
 
+
+resource "aws_cloudwatch_log_group" "vpc_flow_log_group" {
+  name = "vpc-flow-logs"  # Name of the log group
+}
+
+
 resource "aws_flow_log" "flow_log" {
-  iam_role_arn    = "arn"
-  log_destination = "log"
+  iam_role_arn    = "arn:aws:iam::445567107707:role/Ec2AdminRole"
   traffic_type    = "ALL"
   vpc_id          = aws_vpc.my_vpc.id
 }
