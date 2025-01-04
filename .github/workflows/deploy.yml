@@ -34,6 +34,18 @@ jobs:
         id: plan
         run: terraform plan
         working-directory: ./Terraform-VPC
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.9'  # Specify the version of Python you want
+
+      - name: Install Checkov
+        run: pip install checkov
+
+      - name: Run Checkov
+        run: checkov -d ./Terraform-VPC  # Change '.' to the directory containing your IaC files if necessary
+
       - name: Terraform Apply
         id: apply
         run: terraform apply --auto-approve
