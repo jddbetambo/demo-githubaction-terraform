@@ -2,10 +2,25 @@ resource "aws_instance" "web" {
   count = length(var.ec2_names)
   ami           = data.aws_ami.amazon-2.id
   instance_type = "t2.micro"
-  associate_public_ip_address = true
+  iam_instance_profile = "Ec2AdminRole"
+  //associate_public_ip_address = true
   vpc_security_group_ids = [var.sg_id]
   subnet_id = var.subnets[count.index]
   availability_zone = data.aws_availability_zones.available.names[count.index]
+
+ # Checkov
+ ebs_optimized = true
+ monitoring = true
+
+ root_block_device {
+    encrypted     = true
+ }
+
+  metadata_options {
+    http_endpoint = "enabled"
+    http_tokens   = "required"
+  }
+
   user_data = <<-EOF
               #!/bin/bash
               # Update the package manager
@@ -79,5 +94,33 @@ resource "aws_instance" "web" {
 
   tags = {
     Name = var.ec2_names[count.index]
+  }
+}
+
+resource "aws_instance" "test" {
+  ami           = data.aws_ami.amazon-2.id
+  instance_type = "t2.micro"
+  count = 1
+  //associate_public_ip_address = true
+  vpc_security_group_ids = [var.sg_id]
+  subnet_id = var.subnets[count.index]
+  availability_zone = data.aws_availability_zones.available.names[count.index]
+  iam_instance_profile = "Ec2AdminRole"
+
+ # Checkov
+ ebs_optimized = true
+ monitoring = true
+
+ root_block_device {
+    encrypted     = true
+ }
+
+  metadata_options {
+    http_endpoint = "enabled"
+    http_tokens   = "required"
+  }
+
+  tags = {
+    Name = "Tester"
   }
 }

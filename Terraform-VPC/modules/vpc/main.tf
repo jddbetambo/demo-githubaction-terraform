@@ -14,7 +14,7 @@ resource "aws_subnet" "subnets" {
   vpc_id     = aws_vpc.my_vpc.id
   cidr_block = var.subnet_cidr[count.index]
   availability_zone = data.aws_availability_zones.available.names[count.index]
-  map_public_ip_on_launch = true
+  map_public_ip_on_launch = false
   
   tags = {
     Name = var.subnet_names[count.index]
@@ -49,4 +49,11 @@ resource "aws_route_table_association" "rta" {
   count = length(var.subnet_cidr)
   subnet_id      = aws_subnet.subnets[count.index].id
   route_table_id = aws_route_table.rt.id
+}
+
+resource "aws_flow_log" "flow_log" {
+  iam_role_arn    = "arn"
+  log_destination = "log"
+  traffic_type    = "ALL"
+  vpc_id          = aws_vpc.my_vpc.id
 }

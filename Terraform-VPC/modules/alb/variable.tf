@@ -17,3 +17,9 @@ variable "instances" {
   description = "Instance ID for Target Group Attachment"
   type = list(string)
 }
+
+variable "s3_bucket_name" {
+  description = "S3 bucket name for ALB logs"
+  type = string
+  default = "lb_logs"
+}
